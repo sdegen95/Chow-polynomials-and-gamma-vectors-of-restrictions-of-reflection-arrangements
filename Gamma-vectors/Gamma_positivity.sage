@@ -14,6 +14,8 @@
 #########################################################################################################################
 
 # Computes all normal vectors of an arrangement.
+# Input: arr = hyperplane arrangement (as HyperplaneArrangments object from the SageMath Hyperplane arrangement package)
+# Output: List of all normal vectors
 
 def normals(arr):
     hyperps = list(arr.hyperplanes())
@@ -22,6 +24,9 @@ def normals(arr):
 
 
 # Computes the hvector using the topegraph, where the vertices labeled with sign vectors
+# Input: G = topegraph of the arrangement (as Graph object)
+#        d = rank of the arrangement
+# Output: h-vector
 
 def hvector(G,d):
     D = []
@@ -38,24 +43,10 @@ def hvector(G,d):
     return h
 
 
-# Computes the hvector using the topegraph, where the sign vectors for the vertices are stored in a dictionary
-
-def hvector_alt(G,vertInd,d):
-    D = []
-    for u,v,w in G.edges():
-        if len(vertInd[0][u]) < len(vertInd[0][v]):
-            D.append( (u,v) )
-        else:
-            D.append( (v,u) )
-    D = DiGraph( D) 
-    h = [ 0 for i in range(d+1) ]
-    for v in D.vertices():
-        out_deg = D.out_degree(v)
-        h[ out_deg ] += 1
-    return h
-
-
 # Compute the gamma-vector from the h-vector
+# Input: h = h-vector of the arrangement
+#        d = rank of the arrangement
+# Output: gamma-vector
 
 def gamma_vector(h, d):
     t = var('t')
@@ -73,8 +64,9 @@ def gamma_vector(h, d):
     return gamma
 
 
-# Computes the gamma vector using the h-vector
-# solves the problem with 0 in the gamma vector
+# Computes the gamma vector using only the h-vector
+# Input: h = h-vector of the arrangement
+# Output: gamma-vector
 
 def gamma_vector_alt(h_vec):
     gam_vec = []
@@ -100,6 +92,9 @@ def gamma_vector_alt(h_vec):
 #########################################################################################################################
 
 # Computes the D_ns arrangement for given d and s where d=n here
+# Input: d = ambient dimension (integer)
+#        s = integer between 0 and d
+# Output: $D_{d,s}$-arrangement as HyperplaneArrangements object
 
 def dns_arrangement(d,s):
     var_names = [f'x{i}' for i in range(1,d+1)]
@@ -116,6 +111,9 @@ def dns_arrangement(d,s):
 
 
 # Computes the positive roots of the D_ns arrangement.
+# Input: d = ambient dimension (integer)
+#        s = integer between 0 and d
+# Output: positive root system (as a list)
 
 def dns_arrangement_posRoots(d,s):
     e = identity_matrix(d).columns()
@@ -127,6 +125,9 @@ def dns_arrangement_posRoots(d,s):
 
 
 # Computes the topograph for the D_ns arrangements.
+# Input: d = ambient dimension (integer)
+#        s = integer between 0 and d
+# Output: tope graph (second output not important)
 
 def dns_arrangement_topegraph(d,s):
     e = identity_matrix(d).columns()
